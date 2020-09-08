@@ -7,21 +7,23 @@
     <!-- CSS only -->
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="css/custom.css">
 </head>
 <body>
-
+<!-- NAVBAR-->
 <header>
+  <div class="line">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 <div class="container">
   <a class="navbar-brand" href="#">Blog</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarscms" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarsExample05">
+  <div class="collapse navbar-collapse" id="navbarscms">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" href="profile.php"><i class="fa fa-user"></i> Profile</a>
+        <a class="nav-link" href="profile.php"><i class="fa fa-user-plus text-success"></i> Profile</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="dashboard.php">Dashboard</a>
@@ -45,13 +47,16 @@
     </ul>
    
     <ul class="navbar-nav ml-auto">
-    <li><a class="nav-link" href="logout.php"> Logout</a></li>
+    <li><a class="nav-link" href="logout.php"> <i class="fa fa-sign-out text-danger"></i> Logout</a></li>
     </ul>
 
   </div>
   </div>
 </nav>
+</div>
 </header>
+
+<!-- NAVBAR END-->
 
 <main role="main">
 
@@ -70,23 +75,27 @@
 
 </main>
 
-<footer>
+<footer class="bg-dark text-white">
   <div class="container">
-    <p class="float-right">
-      <a href="#">Back to top</a>
+  <div class="row">
+    <div class="col">
+    <p class="lead text-center">
+     <span id="year"></span> &copy; MSZtesz
     </p>
-    <p>Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-    <p>New to Bootstrap? <a href="https://getbootstrap.com/">Visit the homepage</a> or read our <a href="/docs/4.5/getting-started/introduction/">getting started guide</a>.</p>
-  </div>
+    </div>
+    </div>
+</div>
 </footer>
+<div class="line"><div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="js/bootstrap.min.js"></script>
-      
-      
-      <script>window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="/docs/4.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script>
+      <script>window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\/script>')</script>
+      <script src="/docs/4.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script>
 
-
+<script>
+$('#year').text(new Date().getFullYear());
+</script>
 
 
 </body>

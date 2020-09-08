@@ -1,3 +1,10 @@
+/* NAVBAR */
+
+.line {
+    padding-top: 10px;
+    background: #26aae1;
+}
+
 .jumbotron {
     padding-top: 3rem;
     padding-bottom: 3rem;
