@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>blog</title>
+    <title>categories</title>
     <!-- CSS only -->
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -57,7 +57,7 @@
 <div class="container">
 <div class="row">
 <div class="col-md-12">
-<h1><i class="fa fa-text-height" style="color:#26aae1"></i> Admin</h1>
+<h1><i class="fa fa-edit" style="color:#26aae1"></i> Manage categories</h1>
 </div>
 
 </div>
@@ -70,14 +70,34 @@
 
 <main role="main">
 
-  <section class="jumbotron text-center">
-    <div class="container">
+  <section class="container py-2 mb-4">
+    <div class="row">
+      <div class="offset-lg-1 col-lg-10" style="min-height:400px;">
+      <form action="categories.php" class="" method="post">
+      <div class="card bg-secondary text-light mb-3">
+      <div class="card-header">
+      <h1>Add new category</h1>
+      </div>
+      <div class="card-body bg-dark">
+       <div class="form-group">
+       <lable for="title"><span class="fieldinfo"> Category Title: </span></lable>
+
+       <input type="text" name="title" id="title"  placeholder="Írd be a kategóriát.." value="">
+       </div>
+       <div class="row">
+       <div class="col-lg-6 mb-2">
+       <a href="dashboard.php" class="btn btn-warning btn-block"><i class="fa fa-arrow-left"></i> Back to dashboard  </a>
+       </div>
+        <div class="col-lg-6 mb-2">
+       <a href="dashboard.php" name="send" class="btn btn-success btn-block"><i class="fa fa-check"></i> Publish  </a>
+       </div>
+       </div>
       
-      <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
-      <p>
-        <a href="#" class="btn btn-primary my-2">Main call to action</a>
-        <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-      </p>
+      </div>
+      </div>
+      </form>
+      </div>
+      
     </div>
   </section>
 
