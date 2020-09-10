@@ -1,3 +1,54 @@
+<?php require_once("includes/db.php"); ?>
+<?php require_once("includes/functions.php"); ?>
+<?php require_once("includes/sessions.php"); ?>
+<?php 
+if(isset($_POST['send'])) {
+
+  $cat_title = $_POST['title'];
+  $admin = "valuk";
+  date_default_timezone_set("Europe/Budapest");
+  $currentTime = time();
+  $dateTime = strftime("%Y.%m.%d %H:%M:%S", $currentTime);
+
+  
+  
+  
+  if(empty($cat_title)) {
+    $_SESSION['error'] = "all fileds must be filled out!";
+    redirect("categories.php");
+  } elseif(strlen($cat_title) < 2) {
+    $_SESSION['error'] = "You have less than 2 karakter!";
+    redirect("categories.php");
+  } elseif(strlen($cat_title) > 49) {
+    
+    $_SESSION['error'] = "You have two much karater more than(50)!";
+    redirect("categories.php");
+  } else {
+
+    global $connect;
+    
+    $sql = "INSERT INTO category(cat_title, cat_author, datetime) VALUES (:catname, :adminname, :dateTime );";
+    $stmt = $connect->prepare($sql);
+
+    $stmt->bindValue(':catname', $cat_title);
+    $stmt->bindValue(':adminname', $admin);
+    $stmt->bindValue(':dateTime', $dateTime);
+    $Execute=$stmt->execute();
+
+    if($Execute){
+      $_SESSION['success'] = "category with id: " .$connect->lastInsertId(). " added!!";
+      redirect("categories.php");
+    } else {
+      $_SESSION['error'] = "Something went wrong! Try again!";
+      redirect("categories.php");
+    }
+  }
+
+}// submit button end!
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,9 +121,13 @@
 
 <main role="main">
 
+
+
   <section class="container py-2 mb-4">
     <div class="row">
       <div class="offset-lg-1 col-lg-10" style="min-height:400px;">
+      <?php echo message();   echo Successmessage(); ?>
+      
       <form action="categories.php" class="" method="post">
       <div class="card bg-secondary text-light mb-3">
       <div class="card-header">
@@ -89,7 +144,7 @@
        <a href="dashboard.php" class="btn btn-warning btn-block"><i class="fa fa-arrow-left"></i> Back to dashboard  </a>
        </div>
         <div class="col-lg-6 mb-2">
-       <a href="dashboard.php" name="send" class="btn btn-success btn-block"><i class="fa fa-check"></i> Publish  </a>
+       <button type="submit" name="send" class="btn btn-success btn-block"><i class="fa fa-check"></i> Publish  </button>
        </div>
        </div>
       
