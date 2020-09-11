@@ -108,7 +108,7 @@ if(isset($_POST['send'])) {
 <div class="container">
 <div class="row">
 <div class="col-md-12">
-<h1><i class="fa fa-edit" style="color:#26aae1"></i> Manage categories</h1>
+<h1><i class="fa fa-edit" style="color:#26aae1"></i>Add new post</h1>
 </div>
 
 </div>
@@ -126,19 +126,39 @@ if(isset($_POST['send'])) {
   <section class="container py-2 mb-4">
     <div class="row">
       <div class="offset-lg-1 col-lg-10" style="min-height:400px;">
-      <?php echo message();   echo Successmessage(); ?>
+      <?php echo message();  echo Successmessage(); ?>
       
       <form action="categories.php" class="" method="post">
       <div class="card bg-secondary text-light mb-3">
-      <div class="card-header">
-      <h1>Add new category</h1>
-      </div>
+      
       <div class="card-body bg-dark">
        <div class="form-group">
-       <label for="title"><span class="fieldinfo"> Category Title: </span></label>
-
-       <input type="text" name="title" id="title"  placeholder="Írd be a kategóriát.." value="">
+       <label for="title"><span class="fieldinfo"> Post Title: </span></label>
+       <input type="text" name="post_title" id="title"  placeholder="Írd be a címet.." value="">
        </div>
+
+       <div class="form-group">
+       <label for="cat-title"><span class="fieldinfo"> Choose Category:</span></label>
+       <select name="category" id="cat-title" class="form-control">
+       <option value="">1</option>
+       <option value="">2</option>
+       <option value="">3</option>
+       </select>
+       </div>
+       <div class="form-group">
+       
+       <div class="custom-file">
+       <input class="custom-file-input" type="File" name="image" id="imageSelect" value="">
+       <label for="imageSelect"  class="custom-file-label">Select image</label>
+       </div>
+       </div>
+       <div class="form-group">
+       <label for="post"><span class="fieldinfo"> Post:</span></label>
+       <textarea class="form-control" id="post" name="postdesc" id="" cols="30" rows="10"></textarea>
+       
+       </div>
+
+
        <div class="row">
        <div class="col-lg-6 mb-2">
        <a href="dashboard.php" class="btn btn-warning btn-block"><i class="fa fa-arrow-left"></i> Back to dashboard  </a>
