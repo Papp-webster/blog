@@ -8,7 +8,7 @@ if(isset($_POST['send'])) {
   $admin = "valuk";
   date_default_timezone_set("Europe/Budapest");
   $currentTime = time();
-  $dateTime = strftime("%Y.%m.%d %H:%M:%S", $currentTime);
+  $dateTime = strftime("%Y.%m.%d %H:%M", $currentTime);
 
   
   

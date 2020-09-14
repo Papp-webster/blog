@@ -4,43 +4,53 @@
 <?php 
 if(isset($_POST['send'])) {
 
-  $cat_title = $_POST['title'];
-  $admin = "valuk";
+  $post_title = $_POST['post_title'];
+  $category = $_POST['category'];
+  $post_img = $_FILES['image']['name'];
+  $location = "img/" . basename($_FILES['image']['name']);
+  $post_desc = $_POST['postdesc'];
+  $admin = "Zoe";
+  
   date_default_timezone_set("Europe/Budapest");
   $currentTime = time();
-  $dateTime = strftime("%Y.%m.%d %H:%M:%S", $currentTime);
+  $dateTime = strftime("%Y.%m.%d %H:%M", $currentTime);
 
   
   
   
-  if(empty($cat_title)) {
-    $_SESSION['error'] = "all fileds must be filled out!";
-    redirect("categories.php");
-  } elseif(strlen($cat_title) < 2) {
-    $_SESSION['error'] = "You have less than 2 karakter!";
-    redirect("categories.php");
-  } elseif(strlen($cat_title) > 49) {
+  if(empty($post_title)) {
+    $_SESSION['error'] = "title must be filled out!";
+    redirect("add_post.php");
+  } elseif(strlen($post_title) < 5) {
+    $_SESSION['error'] = "You have less than 5 karakter!";
+    redirect("add_post.php");
+  } elseif(strlen($post_desc) > 999) {
     
-    $_SESSION['error'] = "You have two much karater more than(50)!";
-    redirect("categories.php");
+    $_SESSION['error'] = "You have two much karater more than(1000)!";
+    redirect("add_post.php");
   } else {
 
     global $connect;
     
-    $sql = "INSERT INTO category(cat_title, cat_author, datetime) VALUES (:catname, :adminname, :dateTime );";
+    $sql = "INSERT INTO post( datetime, post_title, post_cat, post_author, post_img, post_content) VALUES (:dateTime, :posttitle, :catname, :adminname, :imgname, :postdesc);";
     $stmt = $connect->prepare($sql);
-
-    $stmt->bindValue(':catname', $cat_title);
-    $stmt->bindValue(':adminname', $admin);
     $stmt->bindValue(':dateTime', $dateTime);
+    $stmt->bindValue(':posttitle', $post_title);
+    $stmt->bindValue(':catname', $category);
+    $stmt->bindValue(':adminname', $admin);
+    $stmt->bindValue(':imgname', $post_img);
+    $stmt->bindValue(':postdesc', $post_desc);
+    
     $Execute=$stmt->execute();
 
+    move_uploaded_file($_FILES['image']['tmp_name'], $location);
+
     if($Execute){
-      $_SESSION['success'] = "category with id: " .$connect->lastInsertId(). " added!!";
-      redirect("categories.php");
+      $_SESSION['success'] = "Post with id: " .$connect->lastInsertId(). " added!!";
+      redirect("add_post.php");
     } else {
       $_SESSION['error'] = "Something went wrong! Try again!";
-      redirect("categories.php");
+      redirect("add_post.php");
     }
   }
 
@@ -54,7 +64,7 @@ if(isset($_POST['send'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>categories</title>
+    <title>Posts</title>
     <!-- CSS only -->
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -128,7 +138,7 @@ if(isset($_POST['send'])) {
       <div class="offset-lg-1 col-lg-10" style="min-height:400px;">
       <?php echo message();  echo Successmessage(); ?>
       
-      <form action="categories.php" class="" method="post">
+      <form action="add_post.php" method="post" enctype="multipart/form-data">
       <div class="card bg-secondary text-light mb-3">
       
       <div class="card-body bg-dark">
@@ -139,12 +149,23 @@ if(isset($_POST['send'])) {
 
        <div class="form-group">
        <label for="cat-title"><span class="fieldinfo"> Choose Category:</span></label>
-       <select name="category" id="cat-title" class="form-control">
-       <option value="">1</option>
-       <option value="">2</option>
-       <option value="">3</option>
+       <select name="category" id="cat-title" class="form-control" name="category">
+       <?php 
+       global $connect;
+       $sql = "SELECT * FROM category";
+       $stmt = $connect->query($sql);
+       while($DateRow = $stmt->fetch()) {
+         $id = $DateRow["cat_id"];
+         $category_title = $DateRow["cat_title"];
+       
+       ?>
+
+       <option> <?php echo $category_title; ?></option>
+       <?php } ?>
        </select>
        </div>
+
+       
        <div class="form-group">
        
        <div class="custom-file">
