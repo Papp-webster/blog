@@ -14,7 +14,7 @@ if(isset($_POST['send'])) {
   
   
   if(empty($cat_title)) {
-    $_SESSION['error'] = "all fileds must be filled out!";
+    $_SESSION['error'] = "Category field must be filled out!";
     redirect("categories.php");
   } elseif(strlen($cat_title) < 2) {
     $_SESSION['error'] = "You have less than 2 karakter!";

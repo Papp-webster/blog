@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>blog</title>
+    <title>Post</title>
     <!-- CSS only -->
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -28,7 +28,7 @@
         <a class="nav-link" href="dashboard.php">Dashboard</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="post.php">Posts</a>
+        <a class="nav-link" href="posts.php">Posts</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="categories.php">Categories</a>
@@ -57,9 +57,26 @@
 <div class="container">
 <div class="row">
 <div class="col-md-12">
-<h1><i class="fa fa-text-height" style="color:#26aae1"></i> Admin</h1>
+<h1><i class="fa fa-newspaper-o" style="color:#26aae1"></i> Blog Posts</h1>
 </div>
 
+<div class="col-lg-3 mb-2">
+<a href="add_post.php" class="btn btn-primary btn-block">
+<i class="fa fa-edit"></i> Add New Post</a>
+</div>
+<div class="col-lg-3 mb-2">
+<a href="categories.php" class="btn btn-info btn-block">
+<i class="fa fa-folder"></i> Add New Category</a>
+</div>
+<div class="col-lg-3 mb-2">
+<a href="admin.php" class="btn btn-warning btn-block">
+<i class="fa fa-user-plus"></i> Add New Admin</a>
+</div>
+
+<div class="col-lg-3">
+<a href="comments.php" class="btn btn-success btn-block">
+<i class="fa fa-check"></i> Approve Comments</a>
+</div>
 </div>
 
 </div>
