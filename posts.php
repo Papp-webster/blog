@@ -1,3 +1,7 @@
+<?php require_once("includes/db.php"); ?>
+<?php require_once("includes/functions.php"); ?>
+<?php require_once("includes/sessions.php"); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -92,7 +96,56 @@
   <section class="container py-2 mb-4">
     <div class="row">
     <div class="col-lg-12">
-     <table></table>
+     <table class="table table-striped table-dark table-hover">
+     <tr>
+     <th>#</th>
+     <th>Title</th>
+     <th>Category</th>
+     <th>Date</th>
+     <th>Author</th>
+     <th>Picture</th>
+     <th>Comments</th>
+     <th>Action</th>
+     <th>Delete</th>
+     <th>Live Preview</th>
+     </tr>
+     <?php 
+     global $connect;
+     $sql = "SELECT * FROM post";
+     $stmt = $connect->query($sql);
+     $sr = 0;
+     while ($DateRows = $stmt->fetch()) {
+       $post_id = $DateRows["post_id"];
+       $dateTime = $DateRows["datetime"];
+       $post_title = $DateRows["post_title"];
+       $post_cat = $DateRows["post_cat"];
+       $admin = $DateRows["post_author"];
+       $post_img = $DateRows["post_img"];
+       $post_content = $DateRows["post_content"];
+       $sr++;
+     
+     ?>
+     <tr>
+     <td><?php echo $sr; ?></td>
+     <td><?php if(strlen($post_title)> 20){
+       $post_title = substr($post_title,0,20). '..';
+     }  
+      echo $post_title; ?></td>
+     <td><?php if(strlen($post_cat)> 20){
+       $post_title = substr($post_cat,0,20). '..';
+     }  
+      echo $post_cat; ?></td>
+     <td><span class="d-inline-block text-truncate" style="max-width: 100px;">
+       <?php echo $dateTime; ?></span></td>
+     <td class="table-primary"><?php echo $admin; ?></td>
+     <td><img src="img/<?php echo $post_img; ?>" width="100" alt="pic"></td>
+     <td>comments</td>
+     <td><a href="#"><span class="btn btn-warning">Edit</span></a></td>
+     <td><a href="#"><span class="btn btn-danger">Delete</span></a></td>
+     <td><a href="#"><span class="btn btn-primary">Live</span></a></td>
+     </tr>
+     <?php } ?>
+     </table>
     </div>
     </div>
       
