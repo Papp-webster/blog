@@ -36,7 +36,7 @@ if(isset($_POST['send'])) {
     $Execute=$stmt->execute();
 
     if($Execute){
-      $_SESSION['success'] = "category with id: " .$connect->lastInsertId(). " added!!";
+      $_SESSION['success'] = "category with id: " .$db->lastInsertId(). " added!!";
       redirect("categories.php");
     } else {
       $_SESSION['error'] = "Something went wrong! Try again!";

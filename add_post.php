@@ -33,7 +33,7 @@ if(isset($_POST['send'])) {
     global $connect;
     
     $sql = "INSERT INTO post( datetime, post_title, post_cat, post_author, post_img, post_content) VALUES (:dateTime, :posttitle, :catname, :adminname, :imgname, :postdesc);";
-    $stmt = $connect->prepare($sql);
+    $stmt = $db->prepare($sql);
     $stmt->bindValue(':dateTime', $dateTime);
     $stmt->bindValue(':posttitle', $post_title);
     $stmt->bindValue(':catname', $category);
@@ -46,7 +46,7 @@ if(isset($_POST['send'])) {
     move_uploaded_file($_FILES['image']['tmp_name'], $location);
 
     if($Execute){
-      $_SESSION['success'] = "Post with id: " .$connect->lastInsertId(). " added!!";
+      $_SESSION['success'] = "Post with id: " .$db->lastInsertId(). " added!!";
       redirect("add_post.php");
     } else {
       $_SESSION['error'] = "Something went wrong! Try again!";
