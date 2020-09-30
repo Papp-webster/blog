@@ -25,10 +25,10 @@ if(isset($_POST['send'])) {
     redirect("categories.php");
   } else {
 
-    global $connect;
+    global $db;
     
     $sql = "INSERT INTO category(cat_title, cat_author, datetime) VALUES (:catname, :adminname, :dateTime );";
-    $stmt = $connect->prepare($sql);
+    $stmt = $db->prepare($sql);
 
     $stmt->bindValue(':catname', $cat_title);
     $stmt->bindValue(':adminname', $admin);

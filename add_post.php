@@ -154,9 +154,9 @@ if(isset($_POST['send'])) {
                   <label for="cat-title"><span class="fieldinfo"> Choose Category:</span></label>
                   <select name="category" id="cat-title" class="form-control" name="category">
                     <?php 
-       global $connect;
+       global $db;
        $sql = "SELECT * FROM category";
-       $stmt = $connect->query($sql);
+       $stmt = $db->query($sql);
        while($DateRow = $stmt->fetch()) {
          $id = $DateRow["cat_id"];
          $category_title = $DateRow["cat_title"];

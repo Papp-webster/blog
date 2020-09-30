@@ -1,7 +1,10 @@
 <?php
 
-$dsn = 'mysql:host = localhost; dbname=blog';
-$connect = new PDO($dsn ,'root', '');
+$db = new \PDO(
+    'mysql:host=localhost;dbname=blog',
+    'root',
+    ''
+);
 
 
 

@@ -1,3 +1,5 @@
+<?php require_once("includes/db.php"); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,6 +31,9 @@
               <a class="nav-link" href="index.php">Home</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="post.php">post</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="#">About us</a>
             </li>
             <li class="nav-item">
@@ -55,36 +60,66 @@
       </div>
     </nav>
   </div>
+  <!-- NAVBAR END-->
+
+  <!-- Main -->
   <div class="container">
     <div class="row mt-4">
 
       <div class="col-sm-8">
-        <h1>This the blog</h1>
+        <h1>This the Blog</h1>
         <h1 class="lead">Design by Papp László</h1>
+
+
+        <?php 
+    global $db;
+    
+    $sql = "SELECT * FROM post ORDER BY post_id DESC";
+    $stmt = $db->query($sql);
+    while($Rows = $stmt->fetch()) {
+     $post_id = $Rows['post_id'];
+     $datetime = $Rows['datetime'];
+     $post_title = $Rows['post_title'];
+     $post_cat = $Rows['post_cat'];
+     $post_author = $Rows['post_author'];
+     $post_img = $Rows['post_img'];
+     $post_content = $Rows['post_content'];
+    
+    
+    
+    
+    ?>
+        <div class="card">
+          <img src="img/<?php echo $post_img; ?>" style="max-height:450px; width:400px;" class="img-fluid card-img-top"
+            alt="pic">
+          <div class="card-body">
+            <h4 class="card-title"><?php echo htmlentities($post_title); ?></h4>
+            <small class="text-muted">Szerző: <?php echo htmlentities($post_author); ?> <i class="fa fa-clock-o"></i>
+              <?php echo htmlentities($datetime); ?></small>
+            <span style="float:right;" class="badge badge-dark text-light">Comments 13</span>
+            <hr>
+            <p class="card-text"><?php 
+        if(strlen($post_content) > 150){
+          $post_content = substr($post_content, 0, 200). "...";
+        }
+        echo htmlentities($post_content); ?></p>
+            <a href="fullpost.php" style="float:right;">
+              <span class="btn btn-info">Olvass tovább..</span>
+            </a>
+          </div>
+        </div>
+        <?php } ?>
       </div>
+      
+      <div class="col-sm-4" style="min-height:40px; background:green;"></div>
 
     </div>
+    
+  </div> <!-- main area end-->
 
-  </div>
-  <!-- NAVBAR END-->
-
-  <main role="main">
-
-    <section class="jumbotron text-center">
-      <div class="container">
-
-        <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator,
-          etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
-        <p>
-          <a href="#" class="btn btn-primary my-2">Main call to action</a>
-          <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-        </p>
-      </div>
-    </section>
+  <!-- Side area -->
 
 
-
-  </main>
 
   <footer class="bg-dark text-white">
     <div class="container">

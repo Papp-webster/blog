@@ -113,9 +113,9 @@
               <th>Live Preview</th>
             </tr>
             <?php 
-     global $connect;
+     global $db;
      $sql = "SELECT * FROM post";
-     $stmt = $connect->query($sql);
+     $stmt = $db->query($sql);
      $sr = 0;
      while ($DateRows = $stmt->fetch()) {
        $post_id = $DateRows["post_id"];
