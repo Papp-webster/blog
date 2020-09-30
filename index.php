@@ -111,7 +111,9 @@
         <?php } ?>
       </div>
       
-      <div class="col-sm-4" style="min-height:40px; background:green;"></div>
+      <div class="col-sm-4" style="min-height:40px;">
+    <h3>Ez itt a reklám helye!</h3>
+    </div>
 
     </div>
     
