@@ -52,8 +52,7 @@
 
               <input type="text" placeholder="Search.." name="search">
               <button type="submit" name="searchbutton"><i class="fa fa-search"></i></button>
-
-            </form>
+           </form>
           </ul>
 
         </div>
@@ -71,11 +70,20 @@
         <h1 class="lead">Design by Papp László</h1>
 
 
-        <?php 
-    global $db;
+    <?php
+     global $db;
+     if(isset($_GET["searchbutton"])){
+         $search = $_GET["search"];
+         $sql ="SELECT * FROM post WHERE datetime LIKE :search OR post_title LIKE :search OR post_cat LIKE :search OR post_content LIKE :search";
+         $stmt = $db->prepare($sql);
+         $stmt->bindValue(':search', '%'.$search.'%');
+         $stmt->execute();       
+     } else {
+     $sql = "SELECT * FROM post ORDER BY post_id DESC";
+     $stmt = $db->query($sql);
+     }
+   
     
-    $sql = "SELECT * FROM post ORDER BY post_id DESC";
-    $stmt = $db->query($sql);
     while($Rows = $stmt->fetch()) {
      $post_id = $Rows['post_id'];
      $datetime = $Rows['datetime'];
@@ -110,13 +118,13 @@
         </div>
         <?php } ?>
       </div>
-      
+
       <div class="col-sm-4" style="min-height:40px;">
-    <h3>Ez itt a reklám helye!</h3>
-    </div>
+        <h3>Ez itt a reklám helye!</h3>
+      </div>
 
     </div>
-    
+
   </div> <!-- main area end-->
 
   <!-- Side area -->
