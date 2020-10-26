@@ -1,6 +1,7 @@
 <?php require_once("includes/db.php"); ?>
 <?php require_once("includes/functions.php"); ?>
 <?php require_once("includes/sessions.php"); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -69,8 +70,8 @@
       <div class="col-sm-8">
         <h1>This the Blog</h1>
         <h1 class="lead">Design by Papp László</h1>
-     
-             <?php echo message();  echo Successmessage(); ?>
+
+
     <?php
      global $db;
      if(isset($_GET["searchbutton"])){
@@ -80,7 +81,12 @@
          $stmt->bindValue(':search', '%'.$search.'%');
          $stmt->execute();       
      } else {
-     $sql = "SELECT * FROM post ORDER BY post_id DESC";
+     $id = $_GET["id"];
+     if(!isset($id)){
+       $_SESSION['error'] = "Nincs ilyen poszt!!";
+       redirect("index.php");
+     }
+     $sql = "SELECT * FROM post WHERE post_id='$id' ";
      $stmt = $db->query($sql);
      }
    
@@ -107,14 +113,7 @@
               <?php echo htmlentities($datetime); ?></small>
             <span style="float:right;" class="badge badge-dark text-light">Comments 13</span>
             <hr>
-            <p class="card-text"><?php 
-        if(strlen($post_content) > 150){
-          $post_content = substr($post_content, 0, 200). "...";
-        }
-        echo htmlentities($post_content); ?></p>
-            <a href="fullpost.php?id=<?php echo $post_id; ?>" style="float:right;">
-              <span class="btn btn-info">Olvass tovább..</span>
-            </a>
+            <p class="card-text"><?php echo htmlentities($post_content); ?></p>
           </div>
         </div>
         <?php } ?>

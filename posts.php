@@ -143,9 +143,9 @@
               <td class="table-primary"><?php echo $admin; ?></td>
               <td><img src="img/<?php echo $post_img; ?>" width="100" alt="pic"></td>
               <td>comments</td>
-              <td><a href="#"><span class="btn btn-warning">Edit</span></a></td>
-              <td><a href="#"><span class="btn btn-danger">Delete</span></a></td>
-              <td><a href="#"><span class="btn btn-primary">Live</span></a></td>
+              <td><a href="edit.php?id=<?php echo $post_id; ?>"><span class="btn btn-warning">Edit</span></a></td>
+              <td><a href="delete.php?id=<?php echo $post_id; ?>"><span class="btn btn-danger">Delete</span></a></td>
+              <td><a href="fullpost.php?id=<?php echo $post_id; ?>" target="_blank"><span class="btn btn-primary">Live</span></a></td>
             </tr>
             <?php } ?>
           </table>
