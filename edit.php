@@ -1,8 +1,10 @@
 <?php require_once("includes/db.php"); ?>
 <?php require_once("includes/functions.php"); ?>
 <?php require_once("includes/sessions.php"); ?>
-<?php 
-if(isset($_POST['send'])) {
+<?php
+
+$updateId = $_GET['id'];
+if (isset($_POST['send'])) {
 
   $post_title = $_POST['post_title'];
   $category = $_POST['category'];
@@ -10,51 +12,48 @@ if(isset($_POST['send'])) {
   $location = "img/" . basename($_FILES['image']['name']);
   $post_desc = $_POST['postdesc'];
   $admin = "Zoe";
-  
+
   date_default_timezone_set("Europe/Budapest");
   $currentTime = time();
   $dateTime = strftime("%Y.%m.%d %H:%M", $currentTime);
 
-  
-  
-  
-  if(empty($post_title)) {
+
+
+
+  if (empty($post_title)) {
     $_SESSION['error'] = "title must be filled out!";
-    redirect("add_post.php");
-  } elseif(strlen($post_title) < 5) {
+    redirect("edit.php");
+  } elseif (strlen($post_title) < 5) {
     $_SESSION['error'] = "You have less than 5 karakter!";
-    redirect("add_post.php");
-  } elseif(strlen($post_desc) > 999) {
-    
+    redirect("edit.php");
+  } elseif (strlen($post_desc) > 9999) {
+
     $_SESSION['error'] = "You have two much karater more than(1000)!";
-    redirect("add_post.php");
+    redirect("edit.php");
   } else {
+    global $db;
+    if (!empty($_FILES['image']['name'])) {
+      $sql = "UPDATE post SET post_title ='$post_title', post_cat ='$category', post_img='$post_img', post_content='$post_desc' WHERE post_id='$updateId'";
+    } else {
+      $sql = "UPDATE post SET post_title ='$post_title', post_cat ='$category', post_content='$post_desc' WHERE post_id='$updateId'";
+    }
 
-    global $connect;
     
-    $sql = "INSERT INTO post( datetime, post_title, post_cat, post_author, post_img, post_content) VALUES (:dateTime, :posttitle, :catname, :adminname, :imgname, :postdesc);";
-    $stmt = $db->prepare($sql);
-    $stmt->bindValue(':dateTime', $dateTime);
-    $stmt->bindValue(':posttitle', $post_title);
-    $stmt->bindValue(':catname', $category);
-    $stmt->bindValue(':adminname', $admin);
-    $stmt->bindValue(':imgname', $post_img);
-    $stmt->bindValue(':postdesc', $post_desc);
-    
-    $Execute=$stmt->execute();
 
+    
+    $runSql = $db->query($sql);
+    
     move_uploaded_file($_FILES['image']['tmp_name'], $location);
 
-    if($Execute){
-      $_SESSION['success'] = "Post with id: " .$db->lastInsertId(). " added!!";
-      redirect("add_post.php");
+    if ($runSql) {
+      $_SESSION['success'] = "Post updated!!";
+      redirect("posts.php");
     } else {
       $_SESSION['error'] = "Something went wrong! Try again!";
-      redirect("add_post.php");
+      redirect("posts.php");
     }
   }
-
-}// submit button end!
+} // submit button end!
 
 
 ?>
@@ -78,8 +77,7 @@ if(isset($_POST['send'])) {
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
         <a class="navbar-brand" href="index.php">Blog</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarscms"
-          aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarscms" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -139,50 +137,63 @@ if(isset($_POST['send'])) {
     <section class="container py-2 mb-4">
       <div class="row">
         <div class="offset-lg-1 col-lg-10" style="min-height:400px;">
-          <?php echo message();  
-          echo Successmessage(); 
+          <?php echo message();
+          echo Successmessage();
           global $db;
-          $id = $_GET['id'];          
+          $sql = "SELECT * FROM post WHERE post_id='$updateId'";
+          $stmt = $db->query($sql);
+          while ($DateRow = $stmt->fetch()) {
+            $titleUpdate = $DateRow['post_title'];
+            $catUpdate = $DateRow['post_cat'];
+            $imgUpdate = $DateRow['post_img'];
+            $postUpdate = $DateRow['post_content'];
+          }
           ?>
 
-          <form action="add_post.php" method="post" enctype="multipart/form-data">
+          <form action="edit.php?id=<?php echo $updateId; ?>" method="post" enctype="multipart/form-data">
             <div class="card bg-secondary text-light mb-3">
 
               <div class="card-body bg-dark">
                 <div class="form-group">
                   <label for="title"><span class="fieldinfo"> Post Title: </span></label>
-                  <input type="text" name="post_title" id="title" placeholder="Írd be a címet.." value="">
+                  <input type="text" name="post_title" id="title" placeholder="Írd be a címet.." value="<?php echo $titleUpdate ?>">
                 </div>
 
                 <div class="form-group">
+                  <span class="fieldinfo">Current Category:</span>
+                  <?php echo $catUpdate; ?>
+                  <br>
                   <label for="cat-title"><span class="fieldinfo"> Choose Category:</span></label>
                   <select name="category" id="cat-title" class="form-control" name="category">
-                    <?php 
-       global $db;
-       $sql = "SELECT * FROM category";
-       $stmt = $db->query($sql);
-       while($DateRow = $stmt->fetch()) {
-         $id = $DateRow["cat_id"];
-         $category_title = $DateRow["cat_title"];
-       
-       ?>
+                    <?php
+                    global $db;
+                    $sql = "SELECT * FROM category";
+                    $stmt = $db->query($sql);
+                    while ($DateRow = $stmt->fetch()) {
+                      $id = $DateRow["cat_id"];
+                      $category_title = $DateRow["cat_title"];
 
-                    <option> <?php echo $category_title; ?></option>
+                    ?>
+
+                      <option> <?php echo $category_title; ?></option>
                     <?php } ?>
                   </select>
                 </div>
 
 
                 <div class="form-group">
-
-                  <div class="custom-file">
+                  <span class="fieldinfo">Current Image:</span>
+                  <br>
+                  <img src="img/<?php echo $imgUpdate; ?>" width="150">
+                  <br>
+                  <div class="custom-file mt-2">
                     <input class="custom-file-input" type="File" name="image" id="imageSelect" value="">
                     <label for="imageSelect" class="custom-file-label">Select image</label>
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="post"><span class="fieldinfo"> Post:</span></label>
-                  <textarea class="form-control" id="post" name="postdesc" id="" cols="30" rows="10"></textarea>
+                  <textarea class="form-control" id="post" name="postdesc" id="" cols="30" rows="10"><?php echo $postUpdate; ?></textarea>
 
                 </div>
 
@@ -223,17 +234,15 @@ if(isset($_POST['send'])) {
   </footer>
   <div class="line">
     <div>
-      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
       </script>
-      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
       </script>
       <script src="js/bootstrap.min.js"></script>
       <script>
         window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\/script>')
       </script>
-      
+
 
       <script>
         $('#year').text(new Date().getFullYear());
