@@ -4,6 +4,16 @@
 <?php
 
 $updateId = $_GET['id'];
+
+global $db;
+$sql = "SELECT * FROM post WHERE post_id='$updateId'";
+$stmt = $db->query($sql);
+ while ($DateRow = $stmt->fetch()) {
+$titleUpdate = $DateRow['post_title'];
+$catUpdate = $DateRow['post_cat'];
+$imgUpdate = $DateRow['post_img'];
+$postUpdate = $DateRow['post_content'];
+}
 if (isset($_POST['send'])) {
     
     global $db;
@@ -13,6 +23,8 @@ if (isset($_POST['send'])) {
     
 
     if ($runSql) {
+      $target = "img/$imgUpdate";
+      unlink($target);
       $_SESSION['success'] = "Post deleted!!";
       redirect("posts.php");
     } else {
@@ -107,18 +119,7 @@ if (isset($_POST['send'])) {
         <section class="container py-2 mb-4">
             <div class="row">
                 <div class="offset-lg-1 col-lg-10" style="min-height:400px;">
-                    <?php echo message();
-          echo Successmessage();
-          global $db;
-          $sql = "SELECT * FROM post WHERE post_id='$updateId'";
-          $stmt = $db->query($sql);
-          while ($DateRow = $stmt->fetch()) {
-            $titleUpdate = $DateRow['post_title'];
-            $catUpdate = $DateRow['post_cat'];
-            $imgUpdate = $DateRow['post_img'];
-            $postUpdate = $DateRow['post_content'];
-          }
-          ?>
+                    <?php echo message(); echo Successmessage();?>
 
                     <form action="delete.php?id=<?php echo $updateId; ?>" method="post" enctype="multipart/form-data">
                         <div class="card bg-secondary text-light mb-3">
@@ -126,8 +127,8 @@ if (isset($_POST['send'])) {
                             <div class="card-body bg-dark">
                                 <div class="form-group">
                                     <label for="title"><span class="fieldinfo"> Post Title: </span></label>
-                                    <input disabled type="text" name="post_title" id="title" placeholder="Írd be a címet.."
-                                        value="<?php echo $titleUpdate ?>">
+                                    <input disabled type="text" name="post_title" id="title"
+                                        placeholder="Írd be a címet.." value="<?php echo $titleUpdate ?>">
                                 </div>
 
                                 <div class="form-group">
@@ -143,7 +144,7 @@ if (isset($_POST['send'])) {
                                 </div>
                                 <div class="form-group">
                                     <label for="post"><span class="fieldinfo"> Post:</span></label>
-                                    <textarea  disabled class="form-control" id="post" name="postdesc" id="" cols="30"
+                                    <textarea disabled class="form-control" id="post" name="postdesc" id="" cols="30"
                                         rows="10"><?php echo $postUpdate; ?></textarea>
 
                                 </div>
