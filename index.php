@@ -120,7 +120,8 @@
       </div>
       <!-- Side area -->
       <div class="col-sm-4" style="min-height:40px;">
-        <h3>Ez itt a reklám helye!</h3>
+      <h3>Ez itt a reklám helye!</h3>
+        <img class="img-fluid" src="img/rek.jpg" alt="adv">
       </div>
 
     </div>

@@ -195,8 +195,9 @@ if(empty($name) || empty($email) || empty($comment)) {
         </div>
       </div>
       <!-- Side area -->
-      <div class="col-sm-4" style="min-height:40px;">
+      <div class="col-sm-4">
         <h3>Ez itt a reklám helye!</h3>
+        <img class="img-fluid" src="img/rek.jpg" alt="adv">
       </div>
 
     </div>
