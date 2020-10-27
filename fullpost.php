@@ -1,7 +1,51 @@
 <?php require_once("includes/db.php"); ?>
 <?php require_once("includes/functions.php"); ?>
 <?php require_once("includes/sessions.php"); ?>
-<?php $idFrom = $_GET['id']; ?>
+ <?php $idForm = $_GET["id"]; ?>
+
+<?php
+ if(isset($_POST["comsend"])) {
+
+$name = $_POST["commentName"];
+$email = $_POST["commentEmail"];
+$comment = $_POST["commentWrite"];
+date_default_timezone_set("Europe/Budapest");
+$currentTime = time();
+$dateTime = strftime("%Y.%m.%d %H:%M", $currentTime);
+
+if(empty($name) || empty($email) || empty($comment)) {
+  $_SESSION['error'] = "all fields must be filled out!";
+  redirect("fullpost.php?id={$idForm}");
+} elseif(strlen($comment) > 500) {
+  $_SESSION['error'] = "Your comment less than 500 karakter!";
+  redirect("fullpost.php?id={$idForm}");
+} else {
+
+  global $db;
+  
+  $sql = "INSERT INTO comments(datetime, name, email, comment) VALUES(:datetime, :name, :email, :comment)";
+  $stmt = $db->prepare($sql);
+
+  $stmt->bindValue(':datetime', $dateTime);
+  $stmt->bindValue(':name', $name);
+  $stmt->bindValue(':email', $email);
+  $stmt->bindValue(':comment', $comment);
+  $Execute=$stmt->execute();
+   
+  if($Execute){
+    $_SESSION['success'] = "Comment submitted!";
+    redirect("fullpost.php?id={$idForm}");
+  } else {
+    $_SESSION['error'] = "Something went wrong! Try again!";
+    redirect("fullpost.php?id={$idForm}");
+  }
+}
+
+}// comment button end!
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -69,7 +113,7 @@
       <div class="col-sm-8">
         <h1>This the Blog</h1>
         <h1 class="lead">Design by Papp László</h1>
-
+        <?php echo message();   echo Successmessage(); ?>
 
         <?php
         global $db;
@@ -85,7 +129,7 @@
             $_SESSION['error'] = "Nincs ilyen poszt!!";
             redirect("index.php");
           }
-          $sql = "SELECT * FROM post WHERE post_id='$id' ";
+          $sql = "SELECT * FROM post WHERE post_id='$id'";
           $stmt = $db->query($sql);
         }
 
@@ -117,7 +161,7 @@
         <?php } ?>
         <!-- comment area -->
         <div class="comment-area mb-4">
-          <form action="fullpost.php?id=<?php echo $idFrom; ?>" method="post"></form>
+          <form class="" action="fullpost.php?id=<?php echo $idForm; ?>" method="post">
           <div class="card mt-3">
             <div class="card-header">
               <h5 class="fieldinfo">Comment section</h5>
@@ -142,11 +186,12 @@
                   <textarea name="commentWrite" class="form-control" cols="80" rows="6"></textarea>
                 </div>
                 <div>
-                  <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" name="comsend" class="btn btn-primary">Submit</button>
                 </div>
               </div>
             </div>
           </div>
+          </form>
         </div>
       </div>
       <!-- Side area -->
@@ -157,10 +202,6 @@
     </div>
 
   </div> <!-- main area end-->
-
-
-
-
 
   <footer class="bg-dark text-white">
     <div class="container">

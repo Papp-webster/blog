@@ -11,8 +11,6 @@ if(isset($_POST['send'])) {
   $dateTime = strftime("%Y.%m.%d %H:%M", $currentTime);
 
   
-  
-  
   if(empty($cat_title)) {
     $_SESSION['error'] = "Category field must be filled out!";
     redirect("categories.php");
@@ -44,7 +42,7 @@ if(isset($_POST['send'])) {
     }
   }
 
-}// submit button end!
+}// send button end!
 
 
 ?>
