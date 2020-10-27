@@ -24,9 +24,9 @@ if(isset($_POST['send'])) {
   } elseif(strlen($post_title) < 5) {
     $_SESSION['error'] = "You have less than 5 karakter!";
     redirect("add_post.php");
-  } elseif(strlen($post_desc) > 999) {
+  } elseif(strlen($post_desc) > 9999) {
     
-    $_SESSION['error'] = "You have two much karater more than(1000)!";
+    $_SESSION['error'] = "You have two much karater more than(10000)!";
     redirect("add_post.php");
   } else {
 
@@ -154,15 +154,13 @@ if(isset($_POST['send'])) {
                   <label for="cat-title"><span class="fieldinfo"> Choose Category:</span></label>
                   <select name="category" id="cat-title" class="form-control" name="category">
                     <?php 
-       global $db;
-       $sql = "SELECT * FROM category";
-       $stmt = $db->query($sql);
-       while($DateRow = $stmt->fetch()) {
-         $id = $DateRow["cat_id"];
-         $category_title = $DateRow["cat_title"];
-       
-       ?>
-
+                    global $db;
+                    $sql = "SELECT * FROM category";
+                    $stmt = $db->query($sql);
+                    while($DateRow = $stmt->fetch()) {
+                     $id = $DateRow["cat_id"];
+                    $category_title = $DateRow["cat_title"];
+                    ?>
                     <option> <?php echo $category_title; ?></option>
                     <?php } ?>
                   </select>
