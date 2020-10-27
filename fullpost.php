@@ -23,7 +23,7 @@ if(empty($name) || empty($email) || empty($comment)) {
 
   global $db;
   
-  $sql = "INSERT INTO comments(datetime, name, email, comment) VALUES(:datetime, :name, :email, :comment)";
+  $sql = "INSERT INTO comments(datetime, name, email, comment, approved, status) VALUES(:datetime, :name, :email, :comment, 'pending', 'off')";
   $stmt = $db->prepare($sql);
 
   $stmt->bindValue(':datetime', $dateTime);
