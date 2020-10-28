@@ -1,7 +1,7 @@
 <?php require_once("includes/db.php"); ?>
 <?php require_once("includes/functions.php"); ?>
 <?php require_once("includes/sessions.php"); ?>
- <?php $idForm = $_GET["id"]; ?>
+<?php $idForm = $_GET["id"]; ?>
 
 <?php
  if(isset($_POST["comsend"])) {
@@ -23,13 +23,14 @@ if(empty($name) || empty($email) || empty($comment)) {
 
   global $db;
   
-  $sql = "INSERT INTO comments(datetime, name, email, comment, approved, status) VALUES(:datetime, :name, :email, :comment, 'pending', 'off')";
+  $sql = "INSERT INTO comments(datetime, name, email, comment, approved, status, poszt_id) VALUES(:datetime, :name, :email, :comment, 'pending', 'off', :idFromUrl)";
   $stmt = $db->prepare($sql);
 
   $stmt->bindValue(':datetime', $dateTime);
   $stmt->bindValue(':name', $name);
   $stmt->bindValue(':email', $email);
   $stmt->bindValue(':comment', $comment);
+  $stmt->bindValue(':idFromUrl', $idForm);
   $Execute=$stmt->execute();
    
   if($Execute){
@@ -65,7 +66,8 @@ if(empty($name) || empty($email) || empty($comment)) {
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
         <a class="navbar-brand" href="index.php">Blog</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarscms" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarscms"
+          aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -147,50 +149,79 @@ if(empty($name) || empty($email) || empty($comment)) {
 
 
         ?>
-          <div class="card">
-            <img src="img/<?php echo $post_img; ?>" style="max-height:450px; width:400px;" class="img-fluid card-img-top" alt="pic">
-            <div class="card-body">
-              <h4 class="card-title"><?php echo htmlentities($post_title); ?></h4>
-              <small class="text-muted">Szerző: <?php echo htmlentities($post_author); ?> <i class="fa fa-clock-o"></i>
-                <?php echo htmlentities($datetime); ?></small>
-              <span style="float:right;" class="badge badge-dark text-light">Comments 13</span>
-              <hr>
-              <p class="card-text"><?php echo htmlentities($post_content); ?></p>
+        <div class="card">
+          <img src="img/<?php echo $post_img; ?>" style="max-height:450px; width:400px;" class="img-fluid card-img-top"
+            alt="pic">
+          <div class="card-body">
+            <h4 class="card-title"><?php echo htmlentities($post_title); ?></h4>
+            <small class="text-muted">Szerző: <?php echo htmlentities($post_author); ?> <i class="fa fa-clock-o"></i>
+              <?php echo htmlentities($datetime); ?></small>
+            <span style="float:right;" class="badge badge-dark text-light">Comments 13</span>
+            <hr>
+            <p class="card-text"><?php echo htmlentities($post_content); ?></p>
+          </div>
+        </div>
+        <?php } ?>
+        <!-- Fetching comment  -->
+        <span class="fieldinfo mb-4"> Comments <i class="fa fa-comment"></i></span>
+        <?php 
+        global $db; 
+        $sql = "SELECT * FROM comments WHERE poszt_id='$idForm' AND status='on'";
+        $stmt = $db->query($sql);
+        while($Rows = $stmt->fetch()) {
+          $Commentdate = $Rows['datetime'];
+          $Commentname = $Rows['name'];
+          $Comment = $Rows['comment'];
+        
+        
+        ?>
+        <!-- comment show -->
+        <div>
+          <div class="media comment-block">
+            <img class="d-block img-fluid" src="img/comment.png" width="80" alt="commenter">
+            <div class="media-body ml-2">
+              <h5 class="lead"><?php echo $Commentname; ?></h5>
+              <p class="small"><?php echo $Commentdate; ?></p>
+              <p><?php echo $Comment; ?></p>
             </div>
           </div>
+        </div>
+
+        <hr>
+
         <?php } ?>
         <!-- comment area -->
         <div class="comment-area mb-4">
           <form class="" action="fullpost.php?id=<?php echo $idForm; ?>" method="post">
-          <div class="card mt-3">
-            <div class="card-header">
-              <h5 class="fieldinfo">Comment section</h5>
-              <div class="card-body">
-                <div class="form-group">
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fa fa-user"></i></span>
+            <div class="card mt-3">
+              <div class="card-header">
+                <h5 class="fieldinfo">Comment section</h5>
+                <div class="card-body">
+                  <div class="form-group">
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-user"></i></span>
+                      </div>
+                      <input class="form-control" type="text" name="commentName" placeholder="Name" value="">
                     </div>
-                    <input class="form-control" type="text" name="commentName" placeholder="Name" value="">
                   </div>
-                </div>
-                <div class="form-group">
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                  <div class="form-group">
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                      </div>
+                      <input class="form-control" type="email" name="commentEmail" placeholder="Email" value="">
                     </div>
-                    <input class="form-control" type="email" name="commentEmail" placeholder="Email" value="">
                   </div>
-                </div>
-                <div class="form-group">
-                  <textarea name="commentWrite" class="form-control" cols="80" rows="6"></textarea>
-                </div>
-                <div>
-                  <button type="submit" name="comsend" class="btn btn-primary">Submit</button>
+                  <div class="form-group">
+                    <textarea name="commentWrite" class="form-control" cols="80" rows="6"></textarea>
+                  </div>
+                  <div>
+                    <button type="submit" name="comsend" class="btn btn-primary">Submit</button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
           </form>
         </div>
       </div>
@@ -217,9 +248,11 @@ if(empty($name) || empty($email) || empty($comment)) {
   </footer>
   <div class="line">
     <div>
-      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
       </script>
-      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
       </script>
       <script src="js/bootstrap.min.js"></script>
       <script>

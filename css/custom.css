@@ -26,6 +26,12 @@ form.example input[type=text] {
     background: #f1f1f1;
 }
 
+.comment-block {
+    padding: 20px;
+    background-color: #e8edf0;
+    
+}
+
 /* Style the submit button */
 form.example button {
     float: left;
