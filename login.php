@@ -18,14 +18,14 @@ if(isset($_POST['submit'])) {
         $_SESSION["Username"] = $found_Account["username"];
         $_SESSION["AdminName"] = $found_Account["aname"];
         $_SESSION['success'] = "Welcome ". $_SESSION["AdminName"]. "!";
-        redirect("login.php"); 
+        redirect("admin/dashboard.php"); 
     } else {
         $_SESSION['error'] = "Incorret user or password!";
-    redirect("login.php");
+        redirect("login.php");
     }
   }
 
-}// send button end!
+}// login button end!
 
 
 ?>
