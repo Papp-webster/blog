@@ -19,4 +19,21 @@ function checkuser($user) {
     }
 }
 
+function loginUser($username, $password) {
+    global $db;
+    
+    $sql = "SELECT * FROM admins WHERE username=:username AND password=:password LIMIT 1";
+    $stmt = $db->prepare($sql);
+
+    $stmt->bindValue(':username', $username);
+    $stmt->bindValue(':password', $password);
+    $stmt->execute();
+    $result = $stmt->rowcount(); 
+    if($result == 1) {
+      return $found_Account = $stmt->fetch();
+    } else {
+        return null;
+    }
+}
+
 ?>
