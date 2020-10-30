@@ -82,9 +82,6 @@ if(isset($_POST['send'])) {
         <a class="nav-link" href="profile.php"><i class="fa fa-user-plus text-success"></i> Profile</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="dashboard.php">Dashboard</a>
-      </li>
-      <li class="nav-item">
         <a class="nav-link" href="posts.php">Posts</a>
       </li>
       <li class="nav-item">
